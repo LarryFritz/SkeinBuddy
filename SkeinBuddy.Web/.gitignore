@@ -1,0 +1,4 @@
+bin/*
+obj/*
+SkeinBuddy.Web.csproj.user
+appsettings.Development.json
