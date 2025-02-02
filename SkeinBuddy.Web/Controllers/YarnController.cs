@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SkeinBuddy.DataAccess.Repositories;
 using SkeinBuddy.Models;
+using SkeinBuddy.Queries;
 
 namespace SkeinBuddy.Web.Controllers
 {
@@ -17,7 +18,7 @@ namespace SkeinBuddy.Web.Controllers
             _yarnRepository = yarnRepository;
         }
 
-        [HttpGet(Name = "GetAll")]
+        [HttpGet("GetAll")]
         public async Task<IEnumerable<Yarn>> GetAllAsync()
         {
             var test = await _yarnRepository.GetAllAsync();
@@ -28,6 +29,12 @@ namespace SkeinBuddy.Web.Controllers
         public async Task<Yarn> GetByIdAsync(Guid id)
         {
             return await _yarnRepository.GetByIdAsync(id);
+        }
+
+        [HttpGet]
+        public async Task<PagedResult<Yarn>> QueryAsync([FromQuery]YarnQuery? query)
+        {
+            return await _yarnRepository.QueryAsync(query);
         }
     }
 }
