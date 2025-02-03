@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Npgsql;
 using SkeinBuddy.DataAccess.Factories;
+using SkeinBuddy.Enumerations;
 using SkeinBuddy.Models;
 using SkeinBuddy.Queries;
 using System;
@@ -76,6 +77,28 @@ namespace SkeinBuddy.DataAccess.Repositories
             {
                 parameters.Add(nameof(query.Search), $"%{query.Search}%", DbType.String);
                 sql += $" AND y.{nameof(Yarn.Name)} ILIKE @{nameof(query.Search)}";
+            }
+
+            if (query.Sorts != null && query.Sorts.Count() > 0)
+            {
+                sql += " ORDER BY ";
+
+                int index = 0;
+                foreach (string sortValue in query.Sorts)
+                {
+                    if(index > 0)
+                    {
+                        sql += ", ";
+                    }
+
+                    string[] sortParts = sortValue.Split(':');
+                    if (!string.IsNullOrWhiteSpace(sortValue) && sortParts.Length == 2 && Enum.TryParse(sortParts[0], true, out YarnQuery.SortColumns column) && Enum.TryParse(sortParts[1], true, out SortDirection direction))
+                    {
+                        sql += $" {Enum.GetName(column)} {(direction == SortDirection.Ascending ? "ASC" : "DESC")}";
+                    }
+
+                    index++;
+                }
             }
 
             PagedResult<Yarn> pagedResult = new PagedResult<Yarn>();

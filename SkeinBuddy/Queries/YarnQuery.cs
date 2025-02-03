@@ -7,9 +7,15 @@ using System.Threading.Tasks;
 
 namespace SkeinBuddy.Queries
 {
-    public class YarnQuery : BaseQuery
+    public class YarnQuery : BaseQuery<YarnQuery.SortColumns>
     {
         public Guid? BrandId { get; set; }
         public YarnWeight? Weight { get; set; }
+
+        public enum SortColumns
+        {
+            Weight,
+            Name
+        }
     }
 }
