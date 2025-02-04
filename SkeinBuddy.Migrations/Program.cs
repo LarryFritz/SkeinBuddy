@@ -25,7 +25,7 @@ class Program
 
     public static Dictionary<string, Environment> environments = new Dictionary<string, Environment>
     {
-        { DevEnvironmentName, new Environment { HostName = "108.75.126.144", DbName = "skein_buddy_dev", Port = 5433 } },
+        { DevEnvironmentName, new Environment { HostName = "100.64.129.86", DbName = "skein_buddy_dev", Port = 5344 } },
     };
 
     static void Main(string[] args)

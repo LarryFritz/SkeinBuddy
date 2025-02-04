@@ -13,6 +13,14 @@ namespace SkeinBuddy.Migrations.Migrations
     {
         public override void Up()
         {
+            Execute.Sql(@"
+                CREATE EXTENSION IF NOT EXISTS vector;
+
+                GRANT SELECT, UPDATE, INSERT, DELETE ON ALL TABLES IN SCHEMA public to skein_buddy_api;
+                ALTER DEFAULT PRIVILEGES FOR ROLE skein_buddy_api IN SCHEMA public GRANT SELECT, UPDATE, INSERT, DELETE ON TABLES TO skein_buddy_api;
+                ALTER DATABASE skein_buddy_dev SET TIMEZONE TO 'UTC';
+            ");
+
             Create.Table("brand")
                 .WithBaseColumns()
                 .WithColumn("name").AsString().NotNullable();
