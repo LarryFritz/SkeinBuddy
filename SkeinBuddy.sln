@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkeinBuddy.Web", "SkeinBudd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkeinBuddy.Migrations", "SkeinBuddy.Migrations\SkeinBuddy.Migrations.csproj", "{A5014BA8-5D9C-448E-8283-9E08B479BCE6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkeinBuddy.AI", "SkeinBuddy.AI\SkeinBuddy.AI.csproj", "{2F869948-2ABA-42A6-903B-4FC621471F11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A5014BA8-5D9C-448E-8283-9E08B479BCE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5014BA8-5D9C-448E-8283-9E08B479BCE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5014BA8-5D9C-448E-8283-9E08B479BCE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F869948-2ABA-42A6-903B-4FC621471F11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F869948-2ABA-42A6-903B-4FC621471F11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F869948-2ABA-42A6-903B-4FC621471F11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F869948-2ABA-42A6-903B-4FC621471F11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

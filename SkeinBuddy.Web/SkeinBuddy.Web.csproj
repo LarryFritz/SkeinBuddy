@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SkeinBuddy.AI\SkeinBuddy.AI.csproj" />
     <ProjectReference Include="..\SkeinBuddy.DataAccess\SkeinBuddy.DataAccess.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using SkeinBuddy.AI;
 using SkeinBuddy.DataAccess.Repositories;
 using SkeinBuddy.Models;
 using SkeinBuddy.Queries;
@@ -35,6 +36,17 @@ namespace SkeinBuddy.Web.Controllers
         public async Task<PagedResult<Yarn>> QueryAsync([FromQuery]YarnQuery? query)
         {
             return await _yarnRepository.QueryAsync(query);
+        }
+
+        public class TestEmbedViewModel
+        {
+            public List<string> Texts { get; set; } = null!;
+        }
+
+        [HttpPost("test-embed")]
+        public async Task<IList<ReadOnlyMemory<float>>> TestEmbed(TestEmbedViewModel model)
+        {
+            return await new XenovaEmbeddingService().GenerateEmbeddingsAsync(model.Texts);
         }
     }
 }

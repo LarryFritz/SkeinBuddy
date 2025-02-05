@@ -1,3 +1,5 @@
+using Dapper;
+using Pgvector.Dapper;
 using SkeinBuddy.DataAccess.Factories;
 using SkeinBuddy.DataAccess.Repositories;
 
@@ -14,7 +16,10 @@ builder.Services.AddTransient<ConnectionFactory>();
 builder.Services.AddTransient<YarnRepository>();
 
 // Map PG underscore column names to dotnet pascal case property names
-Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+DefaultTypeMap.MatchNamesWithUnderscores = true;
+
+// Add vector type handler
+SqlMapper.AddTypeHandler(new VectorTypeHandler());
 
 var app = builder.Build();
 

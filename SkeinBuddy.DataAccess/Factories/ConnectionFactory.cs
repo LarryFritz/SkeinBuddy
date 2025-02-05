@@ -18,7 +18,9 @@ namespace SkeinBuddy.DataAccess.Factories
 
         public NpgsqlConnection GetPostgresConnection()
         {
-            return new NpgsqlDataSourceBuilder(_configuration.GetConnectionString("Postgres")).Build().CreateConnection();
+            NpgsqlDataSourceBuilder builder = new NpgsqlDataSourceBuilder(_configuration.GetConnectionString("Postgres"));
+            builder.UseVector();
+            return builder.Build().CreateConnection();
         }
     }
 }
