@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Npgsql;
+using SkeinBuddy.AI;
 using SkeinBuddy.DataAccess.Factories;
 using SkeinBuddy.Enumerations;
 using SkeinBuddy.Models;
@@ -16,9 +17,14 @@ namespace SkeinBuddy.DataAccess.Repositories
     public class YarnRepository
     {
         private readonly ConnectionFactory _connectionFactory;
-        public YarnRepository(ConnectionFactory connectionFactory) 
+        private readonly YarnNameEmbeddingRepository _yarnNameEmbeddingRepository;
+        private readonly XenovaEmbeddingService _xenoviaEmbeddingService;
+
+        public YarnRepository(ConnectionFactory connectionFactory, YarnNameEmbeddingRepository yarnNameEmbeddingRepository, XenovaEmbeddingService xenovaEmbeddingService) 
         {
             _connectionFactory = connectionFactory;
+            _yarnNameEmbeddingRepository = yarnNameEmbeddingRepository;
+            _xenoviaEmbeddingService = xenovaEmbeddingService;
         }
 
         public async Task<IEnumerable<Yarn>> GetAllAsync()
@@ -112,6 +118,30 @@ namespace SkeinBuddy.DataAccess.Repositories
             }
 
             return pagedResult;
+        }
+
+        public async Task<List<Yarn>> QueryNearestNeighborsByName(string name, CancellationToken cancellationToken)
+        {
+            float[] embedding = (await _xenoviaEmbeddingService.GenerateEmbeddingsAsync([name], cancellationToken)).First().ToArray();
+
+            return (await _yarnNameEmbeddingRepository.QueryNearestNeighbors(embedding)).ToList();
+        }
+
+        public async Task<Yarn> CreateAsync(Yarn yarn, CancellationToken cancellationToken)
+        {
+            using (NpgsqlConnection connection = _connectionFactory.GetPostgresConnection())
+            {
+                await connection.ExecuteAsync($@"
+                    INSERT INTO yarn (id, created_at, weight, name, brand_id)
+                    VALUES (@Id, @CreatedAt, @Weight, @Name, @BrandId)
+                ", yarn);
+            }
+
+            float[] embedding = (await _xenoviaEmbeddingService.GenerateEmbeddingsAsync([yarn.Name], cancellationToken)).First().ToArray();
+
+            await _yarnNameEmbeddingRepository.CreateYarnNameEmbedding(yarn.Id, embedding);
+
+            return yarn;
         }
     }
 }

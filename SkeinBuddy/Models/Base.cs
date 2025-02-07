@@ -10,7 +10,7 @@ namespace SkeinBuddy.Models
     public class Base
     {
         [PgColumn("id")]
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [PgColumn("created_at")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;

@@ -1,5 +1,6 @@
 using Dapper;
 using Pgvector.Dapper;
+using SkeinBuddy.AI;
 using SkeinBuddy.DataAccess.Factories;
 using SkeinBuddy.DataAccess.Repositories;
 
@@ -14,6 +15,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<ConnectionFactory>();
 builder.Services.AddTransient<YarnRepository>();
+builder.Services.AddTransient<YarnNameEmbeddingRepository>();
+builder.Services.AddTransient<XenovaEmbeddingService>();
 
 // Map PG underscore column names to dotnet pascal case property names
 DefaultTypeMap.MatchNamesWithUnderscores = true;

@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using SkeinBuddy.AI;
 using SkeinBuddy.DataAccess.Repositories;
 using SkeinBuddy.Models;
 using SkeinBuddy.Queries;
+using SkeinBuddy.Web.ViewModels.Yarn;
 
 namespace SkeinBuddy.Web.Controllers
 {
@@ -19,7 +19,7 @@ namespace SkeinBuddy.Web.Controllers
             _yarnRepository = yarnRepository;
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("get-all")]
         public async Task<IEnumerable<Yarn>> GetAllAsync()
         {
             var test = await _yarnRepository.GetAllAsync();
@@ -38,15 +38,28 @@ namespace SkeinBuddy.Web.Controllers
             return await _yarnRepository.QueryAsync(query);
         }
 
-        public class TestEmbedViewModel
+        [HttpPost]
+        public async Task<ActionResult<Yarn>> CreateAsync(CreateYarnViewModel model, CancellationToken cancellationToken)
         {
-            public List<string> Texts { get; set; } = null!;
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Yarn yarn = new Yarn();
+            yarn.Weight = model.Weight;
+            yarn.Name = model.Name;
+            yarn.BrandId = model.BrandId;
+
+            await _yarnRepository.CreateAsync(yarn, cancellationToken);
+
+            return yarn;
         }
 
-        [HttpPost("test-embed")]
-        public async Task<IList<ReadOnlyMemory<float>>> TestEmbed(TestEmbedViewModel model)
+        [HttpGet("ai-search")]
+        public async Task<List<Yarn>> AiSearch([FromQuery] string text, CancellationToken cancellationToken)
         {
-            return await new XenovaEmbeddingService().GenerateEmbeddingsAsync(model.Texts);
+            return await _yarnRepository.QueryNearestNeighborsByName(text, cancellationToken);
         }
     }
 }

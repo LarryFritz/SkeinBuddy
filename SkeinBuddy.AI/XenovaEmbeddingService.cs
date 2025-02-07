@@ -15,13 +15,7 @@ namespace SkeinBuddy.AI
 
         }
 
-        public async Task<IList<ReadOnlyMemory<float>>> GenerateEmbeddingsAsync(IList<string> data, CancellationToken cancellationToken = default)
-        {
-            List<float[]> embeddings = await GetEmbeddingsAsync(data, cancellationToken);
-            return embeddings.Select(e => new ReadOnlyMemory<float>(e)).ToList();
-        }
-
-        private async Task<List<float[]>> GetEmbeddingsAsync(IList<string> data, CancellationToken cancellationToken)
+        public async Task<List<float[]>> GenerateEmbeddingsAsync(IList<string> data, CancellationToken cancellationToken)
         {
             HttpResponseMessage response = await _httpClient.PostAsJsonAsync<object>($"http://localhost:8080/embed", new { text=data }, cancellationToken);
 

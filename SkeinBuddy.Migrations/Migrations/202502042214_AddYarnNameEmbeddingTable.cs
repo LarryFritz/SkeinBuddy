@@ -9,17 +9,16 @@ using System.Threading.Tasks;
 namespace SkeinBuddy.Migrations.Migrations
 {
     [Migration(202502042214)]
-    public class AddEmbeddingsTable : Migration
+    public class AddYarnNameEmbeddingsTable : Migration
     {
         public override void Up()
         {
-            Execute.Sql("CREATE TABLE embeddings (id serial PRIMARY KEY, embedding vector(384))");
-
+            Execute.Sql("CREATE TABLE yarn_name_embedding (yarn_id uuid PRIMARY KEY REFERENCES yarn (id), embedding vector(384))");
         }
 
         public override void Down()
         {
-            Delete.Table("embeddings");
+            Delete.Table("yarn_name_embedding");
         }
     }
 }
